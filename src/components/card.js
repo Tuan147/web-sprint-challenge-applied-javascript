@@ -1,3 +1,7 @@
+import axios from "axios";
+import { node } from "webpack";
+import { headerAppender } from "./header";
+
 const Card = (article) => {
   // TASK 5
   // ---------------------
@@ -17,6 +21,34 @@ const Card = (article) => {
   //   </div>
   // </div>
   //
+  const card = document.createElement('div');
+  const headline = document.createElement('div');
+  const author = document.createElement('div');
+  const imgContainer = document.createElement('div');
+  const img = document.createElement('img');
+  const authorName = document.createElement('span');
+
+  card.classList.add('card');
+  headline.classList.add('headline');
+  author.classList.add('author');
+  imgContainer.classList.add('img-container');
+
+  card.appendChild(headline);
+  card.appendChild(author);
+  author.appendChild(imgContainer);
+  imgContainer.appendChild(img);
+  author.appendChild(authorName);
+
+
+  headline.textContent = article.headline;
+  authorName.textContent = `By ${article.authorName}`;
+  img.setAttribute('src', `${article.authorPhoto}`);
+
+  card.addEventListener('click', () => {
+    console.log(article.headline)
+  })
+
+  return card;
 }
 
 const cardAppender = (selector) => {
@@ -28,6 +60,48 @@ const cardAppender = (selector) => {
   // Create a card from each and every article object in the response, using the Card component.
   // Append each card to the element in the DOM that matches the selector passed to the function.
   //
+  const getCard = document.querySelector(selector);
+
+  axios.get('http://localhost:5000/api/articles')
+  .then(resp => {
+    const cardInfo = resp.data.articles;
+    
+    for (let i = 0; i < cardInfo.javascript.length; i++){
+      const articleInfo = cardInfo.javascript[i];
+      const card = document.querySelector(selector)
+      card.appendChild(Card(articleInfo))
+    }
+
+    for (let i = 0; i < cardInfo.bootstrap.length; i++){
+      const articleInfo = cardInfo.bootstrap[i];
+      const card = document.querySelector(selector);
+      card.appendChild(Card(articleInfo));
+    }
+
+    for (let i = 0; i < cardInfo.jquery.length; i++){
+      const articleInfo = cardInfo.jquery[i];
+      const card = document.querySelector(selector);
+      card.appendChild(Card(articleInfo));
+    }
+
+    for (let i = 0; i < cardInfo.node.length; i++){
+      const articleInfo = cardInfo.node[i];
+      const card = document.querySelector(selector);
+      card.appendChild(Card(articleInfo));
+    }
+
+    for (let i = 0; i < cardInfo.technology.length; i++){
+      const articleInfo = cardInfo.technology[i];
+      const card = document.querySelector(selector);
+      card.appendChild(Card(articleInfo));
+    }
+
+  })
+  .catch(err => {
+    console.error(err)
+  })
+
+
 }
 
 export { Card, cardAppender }
