@@ -11,10 +11,10 @@ const Header = (title, date, temp) => {
   //    <span class="temp">{ temp }</span>
   //  </div>
   //
-  const header = document.querySelector('div');
-  const span1 = document.querySelector('span');
-  const h1 = document.querySelector('h1');
-  const span2 = document.querySelector('span');
+  const header = document.createElement('div');
+  const span1 = document.createElement('span');
+  const h1 = document.createElement('h1');
+  const span2 = document.createElement('span');
 
   header.classList.add('header');
   span1.classList.add('date');
